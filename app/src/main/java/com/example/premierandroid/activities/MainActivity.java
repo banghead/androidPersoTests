@@ -1,5 +1,6 @@
 package com.example.premierandroid.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +27,8 @@ import com.example.premierandroid.R;
 import com.example.premierandroid.Threads.GetWebServThread;
 import com.example.premierandroid.Threads.GetWebServThreadJSON;
 import com.example.premierandroid.parcelables.Contact;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     Spinner spinner;
 
-    Button button, button2, button3, button4,button5, button6, button7, button8;
+    Button button, button2, button3, button4,button5, button6, button7, button8, button9, button10;
 
     ImageView androidImage;
 
@@ -50,10 +55,13 @@ public class MainActivity extends AppCompatActivity {
     TableLayout table, tableJson;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); //vue principale
+
+        final MainActivity that = this;
 
         button = (Button) findViewById(R.id.button5);
         button2 = (Button) findViewById(R.id.button6);
@@ -63,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         button6 = (Button) findViewById(R.id.button10);
         button7 = (Button) findViewById(R.id.button11);
         button8 = (Button) findViewById(R.id.button12);
+        button9 = (Button) findViewById(R.id.button13);
+        button10 = (Button) findViewById(R.id.button14);
 
         androidImage = (ImageView) findViewById(R.id.imageView7);
         androidGif = (GifImageView) findViewById(R.id.imageGif);
@@ -315,6 +325,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+
+        button9.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+
+                intentIntegrator.initiateScan();
+
+            }
+        });
+
+
+        button10.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                intentIntegrator.initiateScan();
+
+
+            }
+        });
+
+
+
+
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -363,13 +398,65 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("il n'y a rien ici");
             }
 
-        });
 
+
+        });
 
 
     }
 
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        try {
+//            super.onActivityResult(requestCode, resultCode, data);
+//
+//            if (requestCode == REQUEST_CODE  && resultCode  == RESULT_OK) {
+//
+//                String requiredValue = data.getStringExtra("key");
+//            }
+//        } catch (Exception ex) {
+//            Toast.makeText(Activity.this, ex.toString(),
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        switch (requestCode) {
+            case IntentIntegrator.REQUEST_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+
+                    System.out.println("je passe ici");
+
+                    IntentResult intentResult =
+                            IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+
+                    if (intentResult != null) {
+
+                        System.out.println("je ne suis pas null");
+
+                        String contents ="Valeur du code : " + intentResult.getContents();
+                        String format = intentResult.getFormatName();
+
+                        contents += "\nFormat : "+ format;
+
+                        System.out.println("SEARCH_EAN"+ "OK, EAN: " + contents + ", FORMAT: " + format);
+                        Toast.makeText(this, contents, Toast.LENGTH_SHORT).show();
+                    } else {
+                        System.out.println("je suis null");
+                        Log.e("SEARCH_EAN", "IntentResult je NULL!");
+                    }
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    System.out.println("je suis cancel");
+                    Log.e("SEARCH_EAN", "CANCEL");
+                }
+        }
+    }
+
 
 }
+
 
 
