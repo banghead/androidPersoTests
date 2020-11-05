@@ -21,6 +21,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.premierandroid.R;
@@ -29,12 +30,27 @@ import com.example.premierandroid.Threads.GetWebServThreadJSON;
 import com.example.premierandroid.parcelables.Contact;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.scandit.datacapture.barcode.capture.BarcodeCapture;
+import com.scandit.datacapture.barcode.capture.BarcodeCaptureListener;
+import com.scandit.datacapture.barcode.capture.BarcodeCaptureSession;
+import com.scandit.datacapture.barcode.capture.BarcodeCaptureSettings;
+import com.scandit.datacapture.barcode.data.Barcode;
+import com.scandit.datacapture.barcode.data.Symbology;
+import com.scandit.datacapture.barcode.ui.overlay.BarcodeCaptureOverlay;
+import com.scandit.datacapture.core.capture.DataCaptureContext;
+import com.scandit.datacapture.core.data.FrameData;
+import com.scandit.datacapture.core.source.Camera;
+import com.scandit.datacapture.core.source.CameraSettings;
+import com.scandit.datacapture.core.source.FrameSourceState;
+import com.scandit.datacapture.core.ui.DataCaptureView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -53,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     CheckBox json42;
 
     TableLayout table, tableJson;
+
 
 
 
@@ -337,10 +354,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
         button10.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                intentIntegrator.initiateScan();
+
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent cameraActivity = new Intent(MainActivity.this, CameraActivity.class);
+                        startActivity(cameraActivity);
+                    }
+                }, 1000);
 
 
             }
@@ -388,8 +415,8 @@ public class MainActivity extends AppCompatActivity {
                     button4.setVisibility(View.GONE); // fait disparaitre
                     button5.setVisibility(View.GONE); // fait disparaitre
                     button6.setVisibility(View.GONE); // fait disparaitre
-                    button7.setVisibility(View.VISIBLE); // fait disparaitre
-                    button8.setVisibility(View.VISIBLE); // fait disparaitre
+                    button7.setVisibility(View.VISIBLE);
+                    button8.setVisibility(View.VISIBLE);
                 }
             }
 

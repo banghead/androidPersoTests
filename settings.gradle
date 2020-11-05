@@ -1,3 +1,4 @@
+include ':libCIO'
 include ':mylibraryaaaaaaa'
 rootProject.name='PremierAndroid'
 include ':app'

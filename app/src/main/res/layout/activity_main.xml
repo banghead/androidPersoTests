@@ -128,13 +128,13 @@
             android:id="@+id/button13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="code Barre" />
+            android:text="ZXing" />
 
         <Button
             android:id="@+id/button14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="QR Code" />
+            android:text="Scandit" />
 
         <TableLayout
             android:id="@+id/table"

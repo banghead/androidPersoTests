@@ -27,9 +27,8 @@ allprojects {
     repositories {
         mavenCentral()
 
-        maven {
-            url "http://dl.bintray.com/journeyapps/maven"
-        }
+        maven { url "http://dl.bintray.com/journeyapps/maven" }
+        maven { url 'https://scandit.bintray.com/DataCapture' }
     }
 }
 
@@ -38,7 +37,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation project(path: ':mylibraryaaaaaaa')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -52,6 +51,9 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-integration:2.3.0@aar'
     implementation 'com.google.zxing:core:3.2.0'
 
+    implementation "com.scandit.datacapture:core:6.5.0"
+    implementation "com.scandit.datacapture:barcode:6.5.0"
+    implementation "com.scandit.datacapture:parser:6.5.0"
 
 
 
